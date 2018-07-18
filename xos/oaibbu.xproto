@@ -1,0 +1,10 @@
+option app_label = "oaibbuservice";
+option name = "oaibbuservice";
+
+message OAIBBUService (Service){
+    option verbose_name = "OAI BBU Service";
+}
+
+message OAIBBUServiceInstance (TenantWithContainer){
+     option verbose_name = "OAI BBU Service Instance";
+}
