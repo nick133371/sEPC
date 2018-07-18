@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-# models.py - OAI BBU service
+# models.py - OAI EPC service
 
 from core.models import Service, TenantWithContainer, XOSBase
 from django.db.models import *

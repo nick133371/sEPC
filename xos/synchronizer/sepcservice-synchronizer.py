@@ -1,5 +1,3 @@
-
-
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +12,21 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from synchronizers.new_base.modelaccessor import *
-from synchronizers.new_base.model_policies.model_policy_tenantwithcontainer import TenantWithContainerPolicy
+#!/usr/bin/env python
 
-class OAIBBUServiceInstancePolicy(TenantWithContainerPolicy):
-    model_name = "OAIBBUServiceInstance"
+# This imports and runs ../../xos-observer.py
+
+import importlib
+import os
+import sys
+
+from xosconfig import Config
+config_file = os.path.abspath(os.path.dirname(os.path.realpath(__file__)) + '/sepcservice_config.yaml')
+
+Config.init(config_file, 'synchronizer-config-schema.yaml')
+
+synchronizer_path = os.path.join(os.path.dirname(
+    os.path.realpath(__file__)), "../../synchronizers/new_base")
+sys.path.append(synchronizer_path)
+mod = importlib.import_module("xos-synchronizer")
+mod.main()

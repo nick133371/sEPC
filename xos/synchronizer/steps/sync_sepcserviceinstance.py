@@ -23,41 +23,41 @@ sys.path.insert(0, parentdir)
 
 logger = Logger(level=logging.INFO)
 
-class SyncOAIBBUServiceInstance(SyncInstanceUsingAnsible):
+class SyncSEPCServiceInstance(SyncInstanceUsingAnsible):
 
-    provides = [OAIBBUServiceInstance]
+    provides = [SEPCServiceInstance]
 
-    observes = OAIBBUServiceInstance
+    observes = SEPCServiceInstance
 
     requested_interval = 0
 
-    template_name = "oaibbuserviceinstance_playbook.yaml"
+    template_name = "sepcserviceinstance_playbook.yaml"
 
-    service_key_name = "/opt/xos/synchronizers/oaibbuservice/oaibbuservice_private_key"
+    service_key_name = "/opt/xos/synchronizers/sepcservice/sepcservice_private_key"
 
     watches = [ModelLink(ServiceDependency,via='servicedependency'), ModelLink(ServiceMonitoringAgentInfo,via='monitoringagentinfo')]
 
     def __init__(self, *args, **kwargs):
-        super(SyncOAIBBUServiceInstance, self).__init__(*args, **kwargs)
+        super(SyncSEPCServiceInstance, self).__init__(*args, **kwargs)
 
-    def get_oaibbuservice(self, o):
+    def get_sepcservice(self, o):
         if not o.owner:
             return None
 
-        oaibbuservice = OAIBBUService.objects.filter(id=o.owner.id)
+        sepcservice = SEPCService.objects.filter(id=o.owner.id)
 
-        if not oaibbuservice:
+        if not sepcservice:
             return None
 
-        return oaibbuservice[0]
+        return sepcservice[0]
 
     # Gets the attributes that are used by the Ansible template but are not
     # part of the set of default attributes.
     def get_extra_attributes(self, o):
         fields = {}
         fields['tenant_message'] = o.tenant_message
-        oaibbuservice = self.get_oaibbuservice(o)
-        fields['service_message'] = oaibbuservice.service_message
+        sepcservice = self.get_sepcservice(o)
+        fields['service_message'] = sepcservice.service_message
 
         if o.foreground_color:
             fields["foreground_color"] = o.foreground_color.html_code
@@ -74,8 +74,8 @@ class SyncOAIBBUServiceInstance(SyncInstanceUsingAnsible):
         return fields
 
     def delete_record(self, port):
-        # Nothing needs to be done to delete an oaibbuservice; it goes away
-        # when the instance holding the oaibbuservice is deleted.
+        # Nothing needs to be done to delete an sepc; it goes away
+        # when the instance holding the sepc is deleted.
         pass
 
     def handle_service_monitoringagentinfo_watch_notification(self, monitoring_agent_info):
@@ -87,7 +87,7 @@ class SyncOAIBBUServiceInstance(SyncInstanceUsingAnsible):
             logger.info("handle watch notifications for service monitoring agent info...ignoring because target_uri attribute in monitoring agent info:%s is null" % (monitoring_agent_info))
             return
 
-        objs = OAIBBUServiceInstance.objects.all()
+        objs = SEPCServiceInstance.objects.all()
         for obj in objs:
             if obj.owner.id != monitoring_agent_info.service.id:
                 logger.info("handle watch notifications for service monitoring agent info...ignoring because service attribute in monitoring agent info:%s is not matching" % (monitoring_agent_info))
@@ -98,7 +98,7 @@ class SyncOAIBBUServiceInstance(SyncInstanceUsingAnsible):
                logger.warn("handle watch notifications for service monitoring agent info...: No valid instance found for object %s" % (str(obj)))
                return
 
-            logger.info("handling watch notification for monitoring agent info:%s for OAIBBUServiceInstance object:%s" % (monitoring_agent_info, obj))
+            logger.info("handling watch notification for monitoring agent info:%s for SEPCServiceInstance object:%s" % (monitoring_agent_info, obj))
 
             #Run ansible playbook to update the routing table entries in the instance
             fields = self.get_ansible_fields(instance)
@@ -106,5 +106,5 @@ class SyncOAIBBUServiceInstance(SyncInstanceUsingAnsible):
             fields["target_uri"] = monitoring_agent_info.target_uri
 
             template_name = "monitoring_agent.yaml"
-            super(SyncOAIBBUServiceInstance, self).run_playbook(obj, fields, template_name)
+            super(SyncSEPCServiceInstance, self).run_playbook(obj, fields, template_name)
         pass

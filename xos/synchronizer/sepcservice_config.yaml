@@ -14,16 +14,16 @@
 # limitations under the License.
 
 
-name: oaibbuservice-synchronizer
+name: sepcservice-synchronizer
 accessor:
   username: xosadmin@opencord.org
-  password: "@/opt/xos/services/oaibbu/credentials/xosadmin@opencord.org"
+  password: "@/opt/xos/services/sepc/credentials/xosadmin@opencord.org"
 required_models:
-  - OAIBBUService
-  - OAIBBUServiceInstance
+  - SEPCService
+  - SEPCServiceInstance
   - ServiceDependency
   - ServiceMonitoringAgentInfo
-dependency_graph: "/opt/xos/synchronizers/oaibbuservice/model-deps"
-steps_dir: "/opt/xos/synchronizers/oaibbuservice/steps"
-sys_dir: "/opt/xos/synchronizers/oaibbuservice/sys"
-model_policies_dir: "/opt/xos/synchronizers/oaibbuservice/model_policies"
+dependency_graph: "/opt/xos/synchronizers/sepcservice/model-deps"
+steps_dir: "/opt/xos/synchronizers/sepcservice/steps"
+sys_dir: "/opt/xos/synchronizers/sepcservice/sys"
+model_policies_dir: "/opt/xos/synchronizers/sepcservice/model_policies"

@@ -1,3 +1,5 @@
+
+
 # Copyright 2017-present Open Networking Foundation
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -12,13 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
----
-# oaibbu_playbook
+from synchronizers.new_base.modelaccessor import *
+from synchronizers.new_base.model_policies.model_policy_tenantwithcontainer import TenantWithContainerPolicy
 
-- hosts: "{{ instance_name }}"
-  connection: ssh
-  user: ubuntu
-  sudo: yes
-  gather_facts: no
-  vars:
-  roles:
+class SEPCServiceInstancePolicy(TenantWithContainerPolicy):
+    model_name = "SEPCServiceInstance"

@@ -1,0 +1,10 @@
+option app_label = "sepcservice";
+option name = "sepcservice";
+
+message SEPCService (Service){
+    option verbose_name = "OAI stable EPC Service";
+}
+
+message SEPCServiceInstance (TenantWithContainer){
+     option verbose_name = "OAI stable EPC Service Instance";
+}
